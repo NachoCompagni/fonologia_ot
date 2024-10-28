@@ -1,32 +1,38 @@
-<h2>Resultados del Análisis Fonológico</h2>
+{% extends "analisis/base.html" %}
 
-<table>
-    <thead>
-        <tr>
-            <th>Candidato</th>
-            {% for restriccion in restricciones %}
-                <th>{{ restriccion.nombre }}</th>
+{% block title %}Resultados del Análisis{% endblock %}
+
+{% block content %}
+    <h2 class="mb-4">Resultados del Análisis Fonológico</h2>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Candidato</th>
+                {% for restriccion in restricciones %}
+                    <th>{{ restriccion.nombre }}</th>
+                {% endfor %}
+                <th>Penalización Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila in resultados %}
+            <tr>
+                <td>{{ fila.candidato }}</td>
+                {% for violacion in fila.violaciones %}
+                    <td>
+                        {% if violacion %}
+                            <span class="text-danger">✗</span>
+                        {% else %}
+                            <span class="text-success">✓</span>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                <td>{{ fila.penalizacion }}</td>
+            </tr>
             {% endfor %}
-            <th>Penalización Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for fila in resultados %}
-    <tr>
-        <td>{{ fila.candidato }}</td>
-        {% for violacion in fila.violaciones %}
-            <td>
-                {% if violacion %}
-                    ✗
-                {% else %}
-                    ✓
-                {% endif %}
-            </td>
-        {% endfor %}
-        <td>{{ fila.penalizacion }}</td>
-    </tr>
-{% endfor %}
-    </tbody>
-</table>
-
-<h3>Candidato Óptimo: {{ candidato_optimo }} (Penalización: {{ penalizacion_optima }})</h3>
+        </tbody>
+    </table>
+    <div class="alert alert-info">
+        <strong>Candidato Óptimo:</strong> {{ candidato_optimo }} (Penalización: {{ penalizacion_optima }})
+    </div>
+{% endblock %}

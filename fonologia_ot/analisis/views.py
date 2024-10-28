@@ -22,7 +22,7 @@ def analizar_entrada(request):
     candidato_optimo = min(evaluaciones, key=evaluaciones.get)
     penalizacion_optima = evaluaciones[candidato_optimo]
 
-    return render(request, 'analisis/entrada.html', {
+    return render(request, 'analisis/resultados.html', {
         'resultados': resultados,
         'candidato_optimo': candidato_optimo,
         'penalizacion_optima': penalizacion_optima,
