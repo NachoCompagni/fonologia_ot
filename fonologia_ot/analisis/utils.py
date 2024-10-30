@@ -1,3 +1,6 @@
+from ipapy import UNICODE_TO_IPA
+
+
 def generar_candidatos(entrada):
     """
     Genera automáticamente posibles candidatos a partir de una entrada fonológica.
@@ -21,3 +24,4 @@ def evaluar_restricciones(candidatos, restricciones):
                 penalizaciones += restriccion.peso
         evaluaciones[candidato] = penalizaciones
     return evaluaciones
+

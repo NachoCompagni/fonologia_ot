@@ -3,12 +3,100 @@
 {% block title %}Ingreso de Palabra{% endblock %}
 
 {% block content %}
-    <h2>Ingresa una Palabra para Análisis</h2>
-    <form method="get" action="{% url 'analizar_entrada' %}">
-        <div class="form-group">
-            <label for="entrada">Palabra:</label>
-            <input type="text" class="form-control" id="entrada" name="entrada" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Analizar</button>
-    </form>
+    <div class="container">
+        <h2>Ingresa una Palabra para Análisis</h2>
+        <form method="get" action="{% url 'analizar_entrada' %}">
+            <div class="form-group">
+                <label for="entrada">Palabra:</label>
+                <input type="text" class="form-control" id="entrada" name="entrada" required>
+            </div>
+
+            <!-- Controlar número de candidatos -->
+            <div class="form-group">
+                <label for="num_candidatos">Número de Candidatos:</label>
+                <input type="number" class="form-control" id="num_candidatos" name="num_candidatos" min="1" max="10" value="1" onchange="generarCamposCandidatos()" required>
+            </div>
+
+            <!-- Campos dinámicos para ingresar candidatos -->
+            <div id="campos_candidatos">
+                <!-- Campos de candidatos se generarán aquí -->
+            </div>
+
+            <!-- Controlar número de restricciones -->
+            <div class="form-group">
+                <label for="num_restricciones">Número de Restricciones:</label>
+                <input type="number" class="form-control" id="num_restricciones" name="num_restricciones" min="1" max="10" value="1" onchange="generarCamposRestricciones()" required>
+            </div>
+
+            <!-- Campos dinámicos para ingresar restricciones -->
+            <div id="campos_restricciones">
+                <!-- Campos de restricciones se generarán aquí -->
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Analizar</button>
+        </form>
+    </div>
+
+    <!-- Script para generar campos dinámicos de candidatos y restricciones -->
+    <script>
+        function generarCamposCandidatos() {
+            const numeroCandidatos = document.getElementById("num_candidatos").value;
+            const contenedor = document.getElementById("campos_candidatos");
+            contenedor.innerHTML = "";  // Limpiar campos anteriores
+
+            for (let i = 1; i <= numeroCandidatos; i++) {
+                const campoDiv = document.createElement("div");
+                campoDiv.className = "form-group";
+
+                const label = document.createElement("label");
+                label.innerText = `Candidato ${i}:`;
+                label.setAttribute("for", `candidato_${i}`);
+                
+                const input = document.createElement("input");
+                input.type = "text";
+                input.className = "form-control";
+                input.id = `candidato_${i}`;
+                input.name = `candidato_${i}`;
+                input.placeholder = `Candidato ${i}`;
+                input.required = true;
+
+                campoDiv.appendChild(label);
+                campoDiv.appendChild(input);
+                contenedor.appendChild(campoDiv);
+            }
+        }
+
+        function generarCamposRestricciones() {
+            const numeroRestricciones = document.getElementById("num_restricciones").value;
+            const contenedor = document.getElementById("campos_restricciones");
+            contenedor.innerHTML = "";  // Limpiar campos anteriores
+
+            for (let i = 1; i <= numeroRestricciones; i++) {
+                const campoDiv = document.createElement("div");
+                campoDiv.className = "form-group";
+
+                const label = document.createElement("label");
+                label.innerText = `Restricción ${i}:`;
+                label.setAttribute("for", `restriccion_${i}`);
+                
+                const input = document.createElement("input");
+                input.type = "text";
+                input.className = "form-control";
+                input.id = `restriccion_${i}`;
+                input.name = `restriccion_${i}`;
+                input.placeholder = `Restricción ${i}`;
+                input.required = true;
+
+                campoDiv.appendChild(label);
+                campoDiv.appendChild(input);
+                contenedor.appendChild(campoDiv);
+            }
+        }
+
+        // Llamar a las funciones al cargar la página para generar los primeros campos por defecto
+        document.addEventListener("DOMContentLoaded", function() {
+            generarCamposCandidatos();
+            generarCamposRestricciones();
+        });
+    </script>
 {% endblock %}
